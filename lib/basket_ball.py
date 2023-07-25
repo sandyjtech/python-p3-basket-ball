@@ -1,3 +1,5 @@
+#import ipdb
+
 def game_dict():
     return {
         "home": {
@@ -182,3 +184,73 @@ def game_dict():
             ]
         }
     }
+
+    
+def get_all_players():
+   all_players =  game_dict()["home"]["players"] + game_dict()["away"]["players"]
+   return all_players
+
+def num_points_per_game(players_name):
+    for player in get_all_players(): 
+        if player["name"] == players_name:
+            return player["points_per_game"]
+    
+def player_age(players_name):
+    for player in get_all_players(): 
+        if player["name"] == players_name:
+            return player["age"]    
+        
+        
+def team_colors(team_name):
+    for team_key in ["home", "away"]:
+        team = game_dict()[team_key]
+        if team["team_name"] == team_name:
+            return team["colors"]
+    return None     
+        
+            
+def team_names():
+  all_team_names = []
+  for team in game_dict():
+      all_team_names.append(game_dict()[team]["team_name"])
+      
+  return all_team_names
+      
+def player_numbers(team_name):
+    jersey_numbers = []
+    for team in game_dict(): 
+          if game_dict()[team]["team_name"] == team_name:
+            for player in game_dict()[team]["players"]:
+                jersey_numbers.append(player["number"])
+    return jersey_numbers
+
+def player_stats(players_name):
+    stats = []
+    for player in get_all_players():
+        if player["name"] == players_name:
+            stats.append(player)
+    if len(stats) == 1:
+        return stats[0]  
+    return stats  
+            
+def average_rebounds_by_shoe_brand():
+    players = get_all_players()
+    brand_rebounds = {}
+    
+    for player in players:
+        shoe_brand = player["shoe_brand"]
+        rebounds_per_game = player["rebounds_per_game"]
+        
+        if shoe_brand in brand_rebounds:
+            brand_rebounds[shoe_brand].append(rebounds_per_game)
+        else:
+            brand_rebounds[shoe_brand] = [rebounds_per_game]
+            
+    for brand, rebounds_list in brand_rebounds.items():
+        average_rebounds = sum(rebounds_list) / len(rebounds_list)
+        rounded_average = round(average_rebounds, 2)
+        print(f"{brand}:  {rounded_average:.2f}")
+
+
+#ipdb.set_trace()
+
